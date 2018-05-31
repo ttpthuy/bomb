@@ -39,5 +39,12 @@ public class Position {
 	public void decreateY(int n) {
 		this.y -= n;
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		Position p = (Position) obj;
+		if (this.x == p.getX() && this.y == p.getY()) {
+			return true;
+		}
+		return false;
+	}
 }

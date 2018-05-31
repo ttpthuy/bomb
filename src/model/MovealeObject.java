@@ -32,6 +32,13 @@ public abstract class MovealeObject extends Entity {
 	public  void move(){
 		moveBehavior.move();
 	}
+	public boolean monstercanmove(Position p){
+		Entity en = manager.getEntityFromPosition(p);
+		if(en instanceof Wall || en instanceof Brick || en instanceof Bomb)
+			return false;
+		return true;
+		
+	}
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;

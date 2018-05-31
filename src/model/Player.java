@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Graphics; 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -133,32 +134,41 @@ public class Player extends MovealeObject implements Observer {
 	public void update(Observable o, Object arg) {
 		numberOfBombWasCreated--;
 	}
-
+	public boolean canmove(Position p){
+//		boolean canmove = true;
+//		Rectangle bounds = new Rectangle(p.getX(), p.getY(), WIDTH, HEIGHT);
+		Entity en = manager.getEntityFromPosition(p);
+		if(en instanceof Wall || en instanceof Brick || en instanceof Bomb)
+			return false;
+		return true;
+		
+	}
 	public boolean playerCollision() {
 		Iterator<Entity> it = manager.getBoundsList(this).iterator();
+		boolean canmove = true;
 		while (it.hasNext()) {
 			Entity en = it.next();
 			
 			if (en instanceof Monster) {
 				setDie(isDie);
+				canmove = false;
 //				this.setPosition(new Position(50, 50));
 //				return true;
 			}
 			if (en instanceof Flame) {
 				setDie(isDie);
+				canmove = false;
 //				this.setPosition(new Position(50, 50));
 //				return true;
 			}
 			if ( en instanceof Wall || en instanceof Brick || en instanceof Bomb) {
 				List<Entity> list = manager.getBoundsList(this);
-				if (list.size() > 1) {
-					
-				}
+				canmove = false;
 				System.out.println(list.toString() );
 				System.out.println(en  + " entity ");
 			}
 	}
-		return isDie;
+		return canmove;
 	}
 	@Override
 	public void bonus() {

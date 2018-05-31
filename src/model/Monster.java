@@ -64,23 +64,24 @@ public class Monster extends MovealeObject implements Runnable {
 	@Override
 	public void run() {
 		Random r = new Random();
-		int times = 0;
+//		int times = 0;
 		while (true) {
 			move();
 			setDirection(Direction.values()[r.nextInt(4)]);
 			manager.notifyChanged();
-			times++;
-			if (times == 20) {
-				this.setSpeed(this.speed * 2);
-				times = 0;
-			}
+//			times++;
+//			if (times == 20) {
+//				this.setSpeed(this.speed * 2);
+//				times = 0;
+//			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
 
 	@Override
 	public void bonus() {

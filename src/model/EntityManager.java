@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -24,6 +25,7 @@ public class EntityManager extends Observable {
 		player = new Player(new Position(50, 50), this, Direction.N, 50, 2, 0, false);
 		player2 = new Player(new Position(750, 450), this, Direction.E, 50, 2, 0, false);
 		this.list = new Vector<>();
+		
 	list.add(new Wall(new Position (0,0), this)) ;
 	list.add(new Wall(new Position (0,50), this));
 	list.add(new Wall(new Position (0,100 ),this));
@@ -51,7 +53,7 @@ public class EntityManager extends Observable {
 	list.add(new Wall(new Position (50*13,0),this));
 	list.add(new Wall(new Position (50*14,0),this));
 	list.add(new Wall(new Position (50*15,0),this));
-	list.add(new Wall(new Position (50*16,0),this));
+//	list.add(new Wall(new Position (50*16,0),this));
 //		//hang ngang north
 	list.add(new Wall(new Position (50,500),this));
 	list.add(new Wall(new Position (50*2,500),this));
@@ -70,16 +72,16 @@ public class EntityManager extends Observable {
 	list.add(new Wall(new Position (50*15,500),this));
 //	list.add(new Wall(new Position (50*16,500),this));
 //				//hang doc west
-	list.add(new Wall(new Position (800,50),this));
-	list.add(new Wall(new Position (800,50*2),this));
-	list.add(new Wall(new Position (800,50*3),this));
-	list.add(new Wall(new Position (800,50*4),this));
-	list.add(new Wall(new Position (800,50*5),this));
-	list.add(new Wall(new Position (800,50*6),this));
-	list.add(new Wall(new Position (800,50*7),this));
-	list.add(new Wall(new Position (800,50*8),this));
-	list.add(new Wall(new Position (800,50*9),this));
-	list.add(new Wall(new Position (800,50*10),this));
+	list.add(new Wall(new Position (750,50),this));
+	list.add(new Wall(new Position (750,50*2),this));
+	list.add(new Wall(new Position (750,50*3),this));
+	list.add(new Wall(new Position (750,50*4),this));
+	list.add(new Wall(new Position (750,50*5),this));
+	list.add(new Wall(new Position (750,50*6),this));
+	list.add(new Wall(new Position (750,50*7),this));
+	list.add(new Wall(new Position (750,50*8),this));
+	list.add(new Wall(new Position (750,50*9),this));
+	list.add(new Wall(new Position (750,50*10),this));
 //		//center
 //		  // row 1
 	list.add(new Wall(new Position (150,100),this));
@@ -160,8 +162,8 @@ public class EntityManager extends Observable {
 		list.add(new Brick(new Position(150, 50), this));
 		list.add(new Brick(new Position(100, 100), this));
 		// Monster
-		list.add(new Monster(new Position(300, 350), this, Direction.N, 30));
-		list.add(new Monster(new Position(450, 150), this, Direction.N, 30));
+		list.add(new Monster(new Position(300, 350), this, Direction.N, 50));
+		list.add(new Monster(new Position(450, 150), this, Direction.N, 50));
 	
 		// Bonus
 		list.add(new MoreBombBonus(new Position(100, 300), this, getPlayer()));
@@ -228,14 +230,15 @@ public class EntityManager extends Observable {
 		List<Entity> listCollision = new Vector<>();
 		for (Entity entity : list) {
 			listCollision.addAll(entity.getCollision());
-			System.out.println(entity.getCollision());
+//			System.out.println(entity.getCollision());
 		}
 //		listCollision.addAll(player.getCollision());
 		list.removeAll(listCollision);
 		
 	}
 	public  boolean gameOver() {
-		return player.playerCollision();
+		return false;
+		// return player.isDie() or player.playerCollision();
 		
 	}
 	public void	 bonus() {
@@ -245,7 +248,6 @@ public class EntityManager extends Observable {
 	public void move(Direction direction) {
 		player.setDirection(direction);
 		player.move();
-		infrontofPlayer();
 //		player2.move();
 		notifyChanged();
 		System.out.println(player.position.getX() + "  " + player.position.getY() + " player pos");
@@ -307,30 +309,31 @@ public class EntityManager extends Observable {
 			}
 		}
 		return null;
-	public void infrontofPlayer() {
-		Position playPos = player.getPosition();
-		Direction d = player.getDirection();
-		Position enPos = ;
-		System.out.println(enPos.getX() + "   " + enPos.getY() + "  in font of player ");
-		Entity e = getEntityFromPosition(enPos);
-		System.out.println(e + " entity front of");
-		if (e instanceof Wall || e instanceof Brick || e instanceof Bomb) {
-			player.setSpeed(0);
-			System.out.println(player.speed + "   speed when met wall or brick or bomb");
-		}
 	}
-	
+//	public void infrontofPlayer() {
+//		Position playPos = player.getPosition();
+//		Direction d = player.getDirection();
+//		Position enPos ;
+//		System.out.println(enPos.getX() + "   " + enPos.getY() + "  in font of player ");
+//		Entity e = getEntityFromPosition(enPos);
+//		System.out.println(e + " entity front of");
+//		if (e instanceof Wall || e instanceof Brick || e instanceof Bomb) {
+//			player.setSpeed(0);
+//			System.out.println(player.speed + "   speed when met wall or brick or bomb");
+//		}
+//	}
 	public List<Entity> getBoundsList(Entity entity) {
 		List<Entity> list = new Vector<>();
 		Iterator<Entity> itr = this.list.iterator();
+		Entity e;
 		while (itr.hasNext()) {
-			Entity e = itr.next();
+			 e = itr.next();
 			if (e.getBounds().intersects(entity.getBounds())) {
 				list.add(e);
 			}
 		}
-		if (this.player.getBounds().intersects(entity.getBounds()))
-			list.add(player) ; // sua cho nay 
+//		if (this.player.getBounds().intersects(entity.getBounds()))
+//			list.add(player) ; // sua cho nay 
 		return list;
 
 	}
@@ -345,6 +348,60 @@ public class EntityManager extends Observable {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+	public int[][] isNotEntity() {
+		int[][] arr = new int[11][16];
+		Entity e;
+		for (int i = 0; i < list.size(); i++) {
+			int x , y;
+			e = list.get(i);
+			x = e.getPosition().getX() / 50;
+			y = e.getPosition().getY() / 50;
+//			System.out.println(x+ "   " + y + " " +  e);
+			arr[y][x] = 1;
+		}
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println(Arrays.toString(arr[i]));
+		}
+		return arr;
+	}
+	public int[][] theBrickArr() {
+		int[][] arr = new int[11][16];
+		int x , y;
+		Entity e;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) instanceof Brick) {
+				e = list.get(i);
+				x = e.getPosition().getX() / 50;
+				y = e.getPosition().getY() / 50;
+				arr[y][x] = 1;
+			}
+		}
+		return arr;
+	}
+	public int[][] howManyBrickCanBurn() {
+		int[][] res = new int[11][16];
+		int[][] arr = theBrickArr();
+//		int burn = 0;
+		for (int y = 1; y < 11; y++) {
+			for (int x = 1; x < 16; x++) {
+				for (int i = 0; i < 7; i++) {
+					if (x + i < 16 && y + i < 11) {
+						res[y][x] += arr[y][x + i] + arr[y + i][x];
+					}
+				}
+				System.out.println("y = " + y + " x = " + x + " res[x][y] " + res[y][x]);
+			}
+		}
+		for (int i = 0; i < res.length; i++) {
+			System.out.println(Arrays.toString(res[i]));
+		}
+		return res;
+	}
+	public static void main(String[] args) {
+		EntityManager en = new EntityManager();
+//		System.out.println(en.theBrickArr());
+		System.out.println(en.howManyBrickCanBurn());
 	}
 
 

@@ -32,7 +32,7 @@ public class MainView extends JFrame implements Observer{
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-//				entityManager.collisionable();
+				entityManager.collisionable();
 				if (entityManager.gameOver() == true) {
 					gameController.stop();
 					gameOver();
@@ -55,7 +55,7 @@ public class MainView extends JFrame implements Observer{
 		mainContent.setFocusable(true);
 		mainContent.setBackground(Color.WHITE);
 		getContentPane().add(mainContent, BorderLayout.CENTER);
-		this.setSize(850, 600);
+		this.setSize(16*50, 11*50);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
