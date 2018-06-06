@@ -162,8 +162,9 @@ public class EntityManager extends Observable {
 		list.add(new Brick(new Position(150, 50), this));
 		list.add(new Brick(new Position(100, 100), this));
 		// Monster
-		list.add(new Monster(new Position(300, 350), this, Direction.N, 50));
-		list.add(new Monster(new Position(450, 150), this, Direction.N, 50));
+//		list.add(new Monster(new Position(300, 350), this, Direction.N, 50));
+//		list.add(new Monster(new Position(450, 150), this, Direction.N, 50));
+		list.add(new  Monster(new Position(300, 350), this, Direction.N, 50, 2, 0));
 	
 		// Bonus
 		list.add(new MoreBombBonus(new Position(100, 300), this, getPlayer()));
@@ -268,6 +269,14 @@ public class EntityManager extends Observable {
 	}
 	public void putBoom2() {
 		player2.putBoom();
+	}
+	public void monsterPutBoom() {
+		for (Entity entity : list) {
+			if (entity instanceof Monster) {
+				((Monster) entity).monsterPutBoom();
+				
+			}
+		}
 	}
 
 	// start những thằng di chuyển

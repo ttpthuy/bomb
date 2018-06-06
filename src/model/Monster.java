@@ -5,19 +5,34 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-public class Monster extends MovealeObject implements Runnable {
+public class Monster extends MovealeObject implements Runnable,  Observer {
 	private Thread thread;
+	private int maxBomb;
+	private int numberOfBombWasCreated;
 
 	public Monster(Position position, EntityManager manager, Direction direction, int speed) {
 		super(position, manager, direction, speed);
 		image = new ImageIcon("image/monster.png").getImage();
 		setMoveBehavior(new MonsterMove(this));
 	}
+	
+
+	public Monster(Position position, EntityManager manager, Direction direction, int speed, int maxBomb,
+			int numberOfBombWasCreated) {
+		super(position, manager, direction, speed);
+		this.maxBomb = maxBomb;
+		this.numberOfBombWasCreated = numberOfBombWasCreated;
+		image = new ImageIcon("image/monster.png").getImage();
+		setMoveBehavior(new MonsterMove(this));
+	}
+
 
 	@Override
 	public void draw(Graphics g) {
@@ -64,16 +79,17 @@ public class Monster extends MovealeObject implements Runnable {
 	@Override
 	public void run() {
 		Random r = new Random();
-//		int times = 0;
+		int times = 0;
 		while (true) {
 			move();
 			setDirection(Direction.values()[r.nextInt(4)]);
+			
 			manager.notifyChanged();
-//			times++;
-//			if (times == 20) {
-//				this.setSpeed(this.speed * 2);
-//				times = 0;
-//			}
+			times++;
+			if (times == 9) {
+				this.monsterPutBoom();
+				times = 0;
+			}
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -87,6 +103,22 @@ public class Monster extends MovealeObject implements Runnable {
 	public void bonus() {
 		// TODO Auto-generated method stub
 		
+	}
+	public void monsterPutBoom() {
+		if (numberOfBombWasCreated < maxBomb) {
+			Bomb bomb = new Bomb(new Position(this.position.getX(), this.position.getY()), manager);
+			manager.addEntity(bomb);
+
+			((Observable) bomb).addObserver(this);
+			numberOfBombWasCreated++;
+			System.out.println(maxBomb + " Player Bomb current ");
+		}
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		numberOfBombWasCreated--;		
 	}
 
 	

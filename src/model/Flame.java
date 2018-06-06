@@ -37,7 +37,7 @@ public class Flame extends Entity {
 				listEntityConlision.add(en);
 			}
 			if (en instanceof Monster) {
-				listEntityConlision.add(en);
+//				listEntityConlision.add(en);
 			}
 			if (en instanceof Wall) {
 				listEntityConlision.add(this);
